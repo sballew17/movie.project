@@ -21,3 +21,7 @@ app.get('/movies/:title', function (req, res) {
     let returnByTitle = topMovies.find((x) => {return x.title == req.params.title });
     res.json(returnByTitle);
 });
+//listen for requests
+app.listen(8080, () => {
+console.log('Your app is listening on port 8080.');
+});
