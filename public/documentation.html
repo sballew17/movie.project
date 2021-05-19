@@ -7,5 +7,89 @@
 <body>
   <h1> Super Hero Movie List</h1>
   <p>This list will show all of the super hero movies that are avaiable</p>
+
+  <table>
+ <tr>
+   <th>Request</th>
+   <th>URL</th>
+   <th>HTTP Method</th>
+   <th>URL parameters</th>
+   <th>Request body data format</th>
+   <th>Respond body data format</th>
+ </tr>
+ <tr>
+   <td>Get a list of ALL movies</td>
+   <td>/movies</td>
+   <td>GET</td>
+   <td></td>
+   <td>None</td>
+   <td>A JSON object holding data about all movies</td>
+ </tr>
+ <tr>
+   <td>Get data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title</td>
+   <td>/movies/[Title]</td>
+   <td>GET</td>
+   <td>/movies/:Title</td>
+   <td>None</td>
+   <td>A JSON object holding data about a single movie containing a title, description, genre, director, image and featured.
+  </td>
+ </tr>
+ <tr>
+   <td>Get data about a movie genre by name</td>
+   <td>/movies/genre</td>
+   <td>GET</td>
+   <td>/movies/genre/:Genre</td>
+   <td>None</td>
+   <td>A JSON object holding data about the genre</td>
+ </tr>
+ <tr>
+   <td>Get data about a movie director by name</td>
+   <td>/movies/director/[director]</td>
+   <td>GET</td>
+   <td>/movies/director/:director</td>
+   <td>None</td>
+   <td>A JSON object holding data about the director</td>
+ </tr>
+ <tr>
+   <td>Register new user</td>
+   <td>/user</td>
+   <td>POST</td>
+   <td></td>
+   <td>A JSON object holding data about the user to create. }</td>
+ </tr>
+ <tr>
+  <td>Update a user information</td>
+   <td>/user/update/[Username]</td>
+   <td>PUT</td>
+   <td>/user/update/:username</td>
+   <td>a JSON object holding data about the user to update.
+   </td>
+   <td> a JSON object holding data about the user (including the updated data)
+ </tr>
+ <tr>
+   <td>Add a movie to Favourites </td>
+   <td>/users/movie/favourite/[MovieID]</td>
+   <td>POST</td>
+   <td>/users/movie/favourite/:MovieID</td>
+   <td>None</td>
+   <td>A JSON object holding data about the movie that was added to the favourites Movie list. <br> Example:<br> { “title” : “Black Panther"}</td>
+ </tr>
+ <tr>
+   <td>Remove movie from Favourites</td>
+   <td>/user/movie/favourite/[MovieID]</td>
+   <td>DELETE</td>
+   <td>/user/movie/favourite/:MovieID</td>
+   <td>None</td>
+   <td>A JSON object holding data about the updated favorite Movies list.</td>
+ </tr>
+ <tr>
+   <td>Unregister an existing user</td>
+   <td>/user/[Username]</td>
+   <td>DELETE</td>
+   <td>/user/:username</td>
+   <td>None</td>
+   <td>A text message indicating whether the user was successfully deleted</td>
+ </tr>
+</table>
 </body>
 </html>
