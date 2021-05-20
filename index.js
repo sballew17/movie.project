@@ -41,19 +41,19 @@ app.get('/movies', function(req, rec) {
 
 //Get movie details
 app.get('/movies/:title', function (req, res) {
-    res.json(movie.find((movie) =>
+    res.json(movies.find((movie) =>
 {return movie.title == req.params.title }));
 });
 
 //Get genre of movies
 app.get('/movies/genre/:genre', function (req, res) {
-              res.json(movie.find((movie) =>
+              res.json(movies.find((genre) =>
 {return movie.genre === req.params.genre }));
 });
 
 //Get director info
 app.get('movies/dirctor/:director', function (req, res) {
-      res.json(movie.find((movie) =>
+      res.json(movies.find((movie) =>
 {return movie.director === req.params.genre }));
 });
 
