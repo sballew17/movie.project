@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
+const { check } = require('express-validator');
 
 app.use(bodyParser.json());
 app.use(morgan('common'));
@@ -40,24 +41,24 @@ app.get('/movies', function(req, rec) {
 
 //Get movie details
 app.get('/movies/:title', function (req, res) {
-    res.json(movie.find((title) =>
+    res.json(movie.find((movie) =>
 {return movie.title == req.params.title }));
 });
 
 //Get genre of movies
 app.get('/movies/genre/:genre', function (req, res) {
-              res.json(movie.find((genre) =>
+              res.json(movie.find((movie) =>
 {return movie.genre === req.params.genre }));
 });
 
 //Get director info
 app.get('movies/dirctor/:director', function (req, res) {
-      res.json(movie.find((director) =>
+      res.json(movie.find((movie) =>
 {return movie.director === req.params.genre }));
 });
 
 //New users
-app.post('/users'
+app.post('/users',
 [check('Username', 'Username is required').isLength({min:5}),
 check ('Password', 'Password is required').not().isEmpty()
 ], (req, res) => {
@@ -80,8 +81,8 @@ check ('Password', 'Password is required').not().isEmpty()
   }
 );
 //Update existing users
-app.put('/user/update/:Username', [
-check('Username', 'Username is required').isLength({min:5}),
+app.put('/user/update/:Username',
+ [check('Username', 'Username is required').isLength({min:5}),
 check('Password', 'Password is required').not().isEmpty()
 ], (req, res) => {
   let errors = validationResult(req);
