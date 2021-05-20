@@ -36,7 +36,7 @@ director: 'Ryan Coogler, dob May 23, 1986'
 
 //Get all movies
 app.get('/movies', function(req, rec) {
-    res.json(movies);
+    res.json(movies.find);
 });
 
 //Get movie details
