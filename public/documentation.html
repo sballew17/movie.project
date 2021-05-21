@@ -36,7 +36,7 @@
  </tr>
  <tr>
    <td>Get data about a movie genre by name</td>
-   <td>/movies/genre</td>
+   <td>/movies/{genre}</td>
    <td>GET</td>
    <td>/movies/genre/:Genre</td>
    <td>None</td>
@@ -44,7 +44,7 @@
  </tr>
  <tr>
    <td>Get data about a movie director by name</td>
-   <td>/movies/director/[director]</td>
+   <td>/movies/[director]</td>
    <td>GET</td>
    <td>/movies/director/:director</td>
    <td>None</td>
@@ -52,14 +52,14 @@
  </tr>
  <tr>
    <td>Register new user</td>
-   <td>/user</td>
+   <td>/users</td>
    <td>POST</td>
    <td></td>
    <td>A JSON object holding data about the user to create. }</td>
  </tr>
  <tr>
   <td>Update a user information</td>
-   <td>/user/update/[Username]</td>
+   <td>/user/update/</td>
    <td>PUT</td>
    <td>/user/update/:username</td>
    <td>a JSON object holding data about the user to update.
@@ -68,7 +68,7 @@
  </tr>
  <tr>
    <td>Add a movie to Favourites </td>
-   <td>/users/movie/favourite/[MovieID]</td>
+   <td>/users/movie/favourite/</td>
    <td>POST</td>
    <td>/users/movie/favourite/:MovieID</td>
    <td>None</td>
@@ -76,7 +76,7 @@
  </tr>
  <tr>
    <td>Remove movie from Favourites</td>
-   <td>/user/movie/favourite/[MovieID]</td>
+   <td>/user/movie/favourite/</td>
    <td>DELETE</td>
    <td>/user/movie/favourite/:MovieID</td>
    <td>None</td>
