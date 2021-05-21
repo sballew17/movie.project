@@ -32,28 +32,28 @@ bio: 'After the death of his father, TChalla returns home to the African nation 
 genre: 'Action, Science fiction, Superhero',
 director: 'Ryan Coogler, dob May 23, 1986'
 }
-]
+];
 
 //Get all movies
-app.get('/movies', function (req, rec) {
-    res.json(movies.find(movies))});
+app.get('/movies', function (req, res) {
+    res.json(movies)});
 
 //Get movie details
 app.get('/movies/:title', function (req, res) {
     res.json(movies.find((movie) =>
-{return movie.title == req.params.title }));
+{return movie.title == req.params.title }))
 });
 
 //Get genre of movies
-app.get('/movies/genre/:genre', function (req, res) {
+app.get('/movies/:genre', function (req, res) {
     res.json(movies.find((movie) =>
-{return movie.genre === req.params.genre}));
+{return movie.genre === req.params.genre}))
 });
 
 //Get director info
-app.get('movies/director/:director', function (req, res) {
+app.get('movies/:director', function (req, res) {
       res.json(movies.find((movie) =>
-{return movie.director === req.params.director}));
+{return movie.director === req.params.director}))
 });
 
 //New users
@@ -80,38 +80,35 @@ check ('Password', 'Password is required').not().isEmpty()
   }
 );
 //Update existing users
-app.put('/user/update/:Username',
+app.put('/users/update',
  [check('Username', 'Username is required').isLength({min:5}),
 check('Password', 'Password is required').not().isEmpty()
 ], (req, res) => {
-  let errors = validationResult(req);
-  if(!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-  let hashedPassword = user.hashPassword(req.body.Password);
-  user.findOneAndUpdate({ Username: req.params.Username},
-{ $set: {
-  Username: req.body.Username,
-  Password: hashedPassword,
-}
-},
-{ new : true},
-(err, updatedUser) => {
-  if(err) {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  } else {
-    res.json(updatedUser);
-    };
-  });
-});
+  let updateUser = req.body;
 
-//Add new movie
-app.post('/user/movie/favorite/:id', (req, res) => {
-  user.findOneAndUpdate({Username: req.params.Username},
-   { $addToSet: { FavoriteMovies: req.params.id} },
+  if (!updateUser.name) {
+    const message = 'Invalid username';
+    res.status(400).send(message);
+  } else {
+    user.push(updateUser)
+    res.status(201).send(updateUser)
+  }
+  if (!updateUser.password) {
+    const message = 'Password Required';
+    res.status(400).send(message);
+  } else {
+    user.push(updateUser)
+    res.status(201).send(updateUser)
+  }
+  }
+);
+
+//Add new movie to favorite
+app.post('/users/movie/favorite/', (req, res) => {
+  user.findOneAndUpdate({Username: req.params.name},
+   { $addToSet: {FavoriteMovies: req.params.id} },
    {new: true},
-   (err, updatedUser) => {
+   (err, updateUser) => {
      if (err) {console.error(err);
     res.status(500).send('Error: ' + err);}
      else {
@@ -119,8 +116,10 @@ app.post('/user/movie/favorite/:id', (req, res) => {
    }
  });
 });
-//Remove a movie
-app.delete('/user/movie/favorite/:id', (req, res) => {
+//Remove a movie from favorite
+
+app.delete('/users/movie/favorite/', (req, res) =>
+ {
   user.findOneAndUpdate({Username: req.params.Username},
     { $pull: { FavoriteMovies: req.params.id} },
      {new: true}, (err, updatedUser) => {
@@ -131,7 +130,7 @@ app.delete('/user/movie/favorite/:id', (req, res) => {
         });
 });
 //Delete user
-app.delete('/user/:Username',  (req, res) => {
+app.delete('/users/:Username',  (req, res) => {
   user.findOneAndRemove({Username: req.params.Username}).then((user) => {
     if(!user) {
       res.status(400).send(req.params.Username + ' was not found.');
