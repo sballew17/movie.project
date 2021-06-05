@@ -2,9 +2,14 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
-const { check } = require('express-validator');
-
 app.use(bodyParser.json());
+const { check } = require('express-validator');
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+const Movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/movies', { useNewUrlParser: true, useUnifiedTopology: true});
 app.use(morgan('common'));
 app.use(express.static('public'));
 app.use((err, req, res, next) => {
@@ -12,31 +17,17 @@ app.use((err, req, res, next) => {
     res.status(500).send('Server Error');
 })
 
-let movies = [
-
-{id: 1,
-title: 'Captain America: The First Avenger',
-bio: 'It is 1941 and the world is in the throes of war. Steve Rogers (Chris Evans) wants to do his part and join America*s armed forces, but the military rejects him because of his small stature. Finally, Steve gets his chance when he is accepted into an experimental program that turns him into a supersoldier called Captain America. Joining forces with Bucky Barnes (Sebastian Stan) and Peggy Carter (Hayley Atwell), Captain America leads the fight against the Nazi-backed HYDRA organization.',
-genre: 'Action, War, Superhero',
-director:'Joe Johnston, dob May 13, 1950'
-},
-{id: 2,
-title: 'Iron Man',
-bio: 'A billionaire industrialist and genius inventor, Tony Stark (Robert Downey Jr.), is conducting weapons tests overseas, but terrorists kidnap him to force him to build a devastating weapon. Instead, he builds an armored suit and upends his captors. Returning to America, Stark refines the suit and uses it to combat crime and terrorism.',
-genre: 'Action, Thriller, Superhero',
-director: 'Shane Black, Jon Favreau, dob October 16, 1961 and October 19,1966'
-},
-{id: 3,
-title: 'Black Panther',
-bio: 'After the death of his father, TChalla returns home to the African nation of Wakanda to take his rightful place as king. When a powerful enemy suddenly reappears,  mettle as king -- and as Black Panther -- gets tested when hes drawn into a conflict that puts the fate of Wakanda and the entire world at risk. Faced with treachery and danger, the young king must rally his allies and release the full power of Black Panther to defeat his foes and secure the safety of his people.',
-genre: 'Action, Science fiction, Superhero',
-director: 'Ryan Coogler, dob May 23, 1986'
-}
-];
-
 //Get all movies
-app.get('/movies', function (req, res) {
-    res.json(movies)});
+app.get('/movies', (req, res) => {
+    Movies.find()
+      .then((movies) => {
+        res.status(201).json(movies);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+    });
 
 //Get movie details
 app.get('/movies/:title', function (req, res) {
@@ -56,52 +47,91 @@ app.get('/movies/director/:title', function (req, res) {
 {return movie.title == req.params.title}))
 });
 
+//Get users
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+//Get user by username
+// Get a user by username
+app.get('/users/:Name', (req, res) => {
+  Users.findOne({ Name: req.params.Name })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 //New users
-app.post('/users',
-[check('Username', 'Username is required').isLength({min:5}),
-check ('Password', 'Password is required').not().isEmpty()
-], (req, res) => {
-  let newUser = req.body;
-
-  if (!newUser.name) {
-    const message = 'Invalid username';
-    res.status(400).send(message);
-  } else {
-    user.push(newUser)
-    res.status(201).send(newUser)
-  }
-  if (!newUser.password) {
-    const message = 'Password Required';
-    res.status(400).send(message);
-  } else {
-    user.push(newUser)
-    res.status(201).send(newUser)
-  }
-  }
-);
+app.post('/users', (req, res) => {
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
 //Update existing users
-app.put('/users/:Username',  (req, res) => {
-  user.findOneAndRemove({Username: req.params.Username}).then((user) => {
-    if(!user) {
-      res.status(400).send(req.params.Username + ' was not found.');
+app.put('/users/:Username', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+    {
+      Username: req.body.Username,
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    }
+  },
+  { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if(err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
     } else {
-      res.status(200).send(req.params.Username + ' was deleted.');
-    };    });
+      res.json(updatedUser);
+    }
   });
-
+});
 //Add new movie to favorite
-app.post('/users/:Username/favorites/:movieID', (req, res) => {
-	Users.findOneAndUpdate({Username: req.params.Username},
-		{ $addToSet: { FavoriteMovies: req.params.MovieID} },
-		{new: true},
-		(err, updatedUser) => {
-			if (err) {
-				console.error(err);
-				res.status(500).send('Error: ' + err);
-			} else {
-				res.json(updatedUser);
-			}
-		});
+app.post('/users/:Username/Movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $push: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
 });
 //Remove a movie from favorite
 app.delete('/users/:Username/favorites/movieID', (req, res) => {
@@ -118,15 +148,20 @@ app.delete('/users/:Username/favorites/movieID', (req, res) => {
 });
 
 //Delete user
-app.delete('/users/:Username',  (req, res) => {
-  user.findOneAndRemove({Username: req.params.Username}).then((user) => {
-    if(!user) {
-      res.status(400).send(req.params.Username + ' was not found.');
-    } else {
-      res.status(200).send(req.params.Username + ' was deleted.');
-    };    });
-  });
-
+app.delete('/users/:Username', (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.Username + ' was not found');
+      } else {
+        res.status(200).send(req.params.Username + ' was deleted.');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 //listen for requests
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
