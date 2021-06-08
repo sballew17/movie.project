@@ -27,7 +27,7 @@
  </tr>
  <tr>
    <td>Get data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title</td>
-   <td>/movies/[Title]</td>
+   <td>/movies/[:Name]</td>
    <td>GET</td>
    <td>/movies/:Title</td>
    <td>None</td>
@@ -36,7 +36,7 @@
  </tr>
  <tr>
    <td>Get data about a movie genre by name</td>
-   <td>/movies/{genre}</td>
+   <td>/movies/genre/:Name</td>
    <td>GET</td>
    <td>/movies/genre/:Genre</td>
    <td>None</td>
@@ -44,11 +44,25 @@
  </tr>
  <tr>
    <td>Get data about a movie director by name</td>
-   <td>/movies/[director]</td>
+   <td>/movies/director/:Name</td>
    <td>GET</td>
    <td>/movies/director/:director</td>
    <td>None</td>
    <td>A JSON object holding data about the director</td>
+ </tr>
+  <tr>
+   <td>Get all user info</td>
+   <td>/users</td>
+   <td>GET</td>
+   <td></td>
+   <td>A JSON object holding data about the user to create. }</td>
+ </tr>
+ <tr>
+   <td>Get all user by username info</td>
+   <td>/users/:Username</td>
+   <td>GET</td>
+   <td></td>
+   <td>A JSON object holding data about the user to create. }</td>
  </tr>
  <tr>
    <td>Register new user</td>
@@ -59,7 +73,7 @@
  </tr>
  <tr>
   <td>Update a user information</td>
-   <td>/user/update/</td>
+   <td>/user/:Username</td>
    <td>PUT</td>
    <td>/user/update/:username</td>
    <td>a JSON object holding data about the user to update.
@@ -68,7 +82,7 @@
  </tr>
  <tr>
    <td>Add a movie to Favourites </td>
-   <td>/users/movie/favourite/</td>
+   <td>/users/:Username/Movies/:MovieID</td>
    <td>POST</td>
    <td>/users/movie/favourite/:MovieID</td>
    <td>None</td>
@@ -76,7 +90,7 @@
  </tr>
  <tr>
    <td>Remove movie from Favourites</td>
-   <td>/user/movie/favourite/</td>
+   <td>/users/:Username/Movies/:MovieID</td>
    <td>DELETE</td>
    <td>/user/movie/favourite/:MovieID</td>
    <td>None</td>
@@ -84,7 +98,7 @@
  </tr>
  <tr>
    <td>Unregister an existing user</td>
-   <td>/user/[Username]</td>
+   <td>/user/:Username</td>
    <td>DELETE</td>
    <td>/user/:username</td>
    <td>None</td>
