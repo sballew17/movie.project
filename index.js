@@ -167,7 +167,7 @@ app.put('/users/:Username',
       res.json(updatedUser);
     }
   });
-});
+};
 //Add new movie to favorite
 app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
@@ -217,4 +217,5 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
+});
 });
