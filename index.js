@@ -24,6 +24,10 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
+app.get('/', (req, res) => {
+    res.redirect('Welcome to my Superhero List!');
+});
+
 //Get all movies
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.find()
