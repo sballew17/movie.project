@@ -19,7 +19,7 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Server Error');
 })
-
+var PORT = process.env.PORT || 8080;
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
