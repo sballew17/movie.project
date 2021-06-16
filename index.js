@@ -25,7 +25,7 @@ const passport = require('passport');
 require('./passport');
 
 app.get('/', (req, res) => {
-    res.redirect('Welcome to my Superhero List!');
+    res.send('Welcome to my Superhero List!');
 });
 
 //Get all movies
