@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
+const { check } = require('express-validator');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const Movies = Models.Movie;
@@ -18,7 +19,7 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Server Error');
 })
-var PORT = process.env.PORT || 8080;
+
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
