@@ -3,7 +3,6 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
-const { check } = require('express-validator');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const Movies = Models.Movie;
