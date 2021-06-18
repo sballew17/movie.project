@@ -1,9 +1,9 @@
 # movie.project
 
 # Tools
--Node.js
+<p>-Node.js
 -Express
--Mongoose
+-Mongoose</p>
 
 #Description
 <p>The web application that I have developed will provide access to Superhero movies that are in existence today. The user will be able to find details about the movie, the genre type, a description of that genre, the director and their bio. As a user, you will be able to sign up and create a list of favorite movies from the list provided. This is just a backend development of this, so check back soon for updates.</p?>
