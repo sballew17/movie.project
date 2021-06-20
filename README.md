@@ -16,4 +16,4 @@
 # Documentation
 
 <p>To see all endpoints of the application and to test them out, please take a look at the documentation of the application.</p>
-<a href="https://github.com/Alex-Offner/movie_api/blob/main/documentation.html">Documentation</a>
+<a href="https://github.com/sballew17/movie.project/blob/main/public/documentation.html">Documentation</a>
