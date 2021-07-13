@@ -52,7 +52,7 @@ app.get('/movies/:Name', passport.authenticate('jwt', { session: false }), (req,
     });
 });
 
-app.get('/movies/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.Name })
     .then((movie) => {
       res.json(movie.Genre);
@@ -63,7 +63,7 @@ app.get('/movies/genre/:Name', passport.authenticate('jwt', { session: false }),
     });
 });
 //Get info about Director
-app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/director/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Director.Name': req.params.Name })
     .then((movie) => {
       res.json(movie.Director);
